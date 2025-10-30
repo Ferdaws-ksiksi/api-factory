@@ -4,35 +4,49 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.UUID;
+import java.time.LocalDate;
 
-/** JPA entity for a contract belonging to a client. */
 @Entity
 @Table(name = "contract")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Contract {
+
     @Id
-    @Column(columnDefinition = "uuid")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    private Instant startDate = Instant.now();
-    private Instant endDate;
-    @Column(precision = 19, scale = 4, nullable = false)
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "end_date")
+    private LocalDate endDate;
+
+    @Column(name = "cost_amount", precision = 19, scale = 2, nullable = false)
     private BigDecimal costAmount;
-    private Instant lastModifiedDate = Instant.now();
-    private Instant createdAt = Instant.now();
+
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
+
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
     @PrePersist
     public void prePersist() {
-        if (id == null) id = UUID.randomUUID();
-        if (startDate == null) startDate = Instant.now();
+        if (startDate == null) startDate = LocalDate.now();
         createdAt = Instant.now();
-        lastModifiedDate = Instant.now();
+        updatedAt = Instant.now();
     }
+
     @PreUpdate
-    public void preUpdate() { lastModifiedDate = Instant.now(); }
+    public void preUpdate() {
+        updatedAt = Instant.now();
+    }
 }

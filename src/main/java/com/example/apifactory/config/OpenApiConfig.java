@@ -14,6 +14,6 @@ public class OpenApiConfig {
                 .title("Client–Contract API")
                 .version("1.0.0")
                 .description("REST API to manage clients and contracts.")
-                .contact(new Contact().name("Ferdaws Ksiksi").email("your.email@example.com")));
+                .contact(new Contact().name("Ferdaws Ksiksi").email("ferdawsksiksi2015@gmail.com")));
     }
 }

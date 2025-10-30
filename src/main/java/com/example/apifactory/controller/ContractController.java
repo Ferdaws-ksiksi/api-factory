@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Map;
-import java.util.UUID;
 
 /** REST endpoints for contracts. */
 @RestController
@@ -21,25 +20,25 @@ public class ContractController {
     private final ContractService service;
 
     @PostMapping
-    public Contract create(@PathVariable UUID clientId,@Valid @RequestBody ContractDTO dto){
+    public Contract create(@PathVariable Long clientId, @Valid @RequestBody ContractDTO dto){
         return service.create(clientId, dto);
     }
 
     @PatchMapping("/{contractId}")
-    public Contract updateCost(@PathVariable UUID clientId,@PathVariable UUID contractId,
+    public Contract updateCost(@PathVariable Long clientId, @PathVariable Long contractId,
                                @Valid @RequestBody ContractDTO dto){
         return service.updateCost(clientId, contractId, dto);
     }
 
     @GetMapping
-    public Page<Contract> listActive(@PathVariable UUID clientId,
+    public Page<Contract> listActive(@PathVariable Long clientId,
                                      @RequestParam(required=false) Instant updatedAfter,
                                      Pageable pageable){
         return service.listActive(clientId, updatedAfter, pageable);
     }
 
     @GetMapping("/sum-active")
-    public Map<String,Object> sumActive(@PathVariable UUID clientId){
+    public Map<String,Object> sumActive(@PathVariable Long clientId){
         BigDecimal sum = service.sumActive(clientId);
         return Map.of("clientId", clientId, "sumActiveContractCost", sum);
     }

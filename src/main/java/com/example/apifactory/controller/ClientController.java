@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.net.URI;
-import java.util.UUID;
 
 /** REST endpoints for clients. */
 @RestController
@@ -19,10 +18,10 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<Client> create(@Valid @RequestBody ClientDTO dto){
-        if(dto.getType()==ClientType.PERSON && dto.getBirthDate()==null)
+        if(dto.getType() == ClientType.PERSON && dto.getBirthDate() == null)
             return ResponseEntity.badRequest().build();
-        if(dto.getType()==ClientType.COMPANY &&
-                (dto.getCompanyIdentifier()==null||dto.getCompanyIdentifier().isBlank()))
+        if(dto.getType() == ClientType.COMPANY &&
+                (dto.getCompanyIdentifier() == null || dto.getCompanyIdentifier().isBlank()))
             return ResponseEntity.badRequest().build();
 
         Client c = Client.builder()
@@ -34,14 +33,16 @@ public class ClientController {
                 .companyIdentifier(dto.getCompanyIdentifier())
                 .build();
         Client saved = service.create(c);
-        return ResponseEntity.created(URI.create("/api/v1/clients/"+saved.getId())).body(saved);
+        return ResponseEntity.created(URI.create("/api/v1/clients/" + saved.getId())).body(saved);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> get(@PathVariable UUID id){ return ResponseEntity.ok(service.get(id)); }
+    public ResponseEntity<Client> get(@PathVariable Long id){
+        return ResponseEntity.ok(service.get(id));
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> update(@PathVariable UUID id,@Valid @RequestBody ClientDTO dto){
+    public ResponseEntity<Client> update(@PathVariable Long id, @Valid @RequestBody ClientDTO dto){
         Client changes = new Client();
         changes.setName(dto.getName());
         changes.setPhone(dto.getPhone());
@@ -50,7 +51,7 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
