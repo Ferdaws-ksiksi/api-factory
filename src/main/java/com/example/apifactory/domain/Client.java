@@ -1,4 +1,6 @@
 package com.example.apifactory.domain;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,6 +46,7 @@ public class Client {
     private Instant updatedAt;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Contract> contracts = new ArrayList<>();
 
     @PrePersist

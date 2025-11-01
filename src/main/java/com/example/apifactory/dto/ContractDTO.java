@@ -8,10 +8,13 @@ import java.time.LocalDate;
 
 @Data
 public class ContractDTO {
+    // If not provided, will be set to current date
     private LocalDate startDate;
+
+    // Can be null
     private LocalDate endDate;
 
-    @NotNull
-    @DecimalMin(value="0.0", inclusive=false)
+    @NotNull(message = "Cost amount is required")
+    @DecimalMin(value = "0.01", message = "Cost amount must be greater than 0")
     private BigDecimal costAmount;
 }

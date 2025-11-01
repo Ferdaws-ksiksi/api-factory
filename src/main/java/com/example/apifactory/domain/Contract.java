@@ -1,5 +1,7 @@
 package com.example.apifactory.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -21,6 +23,7 @@ public class Contract {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
+    @JsonBackReference
     private Client client;
 
     @Column(name = "start_date", nullable = false)
@@ -33,6 +36,7 @@ public class Contract {
     private BigDecimal costAmount;
 
     @Column(name = "updated_at", nullable = false)
+    @JsonIgnore  // updatedAt should NOT be exposed in API per specs
     private Instant updatedAt;
 
     @Column(name = "created_at", nullable = false)
